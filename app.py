@@ -5,33 +5,30 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    # Get the first 150 Pokémon from the API
+    # Get the leagues from the API
     response = requests.get("https://api-football-standings.azharimm.site/leagues")
     data = response.json()
-    pokemon_list = data['results']
-    
-    # Create a list to hold Pokémon details
-    pokemons = []
-    
-    for pokemon in pokemon_list:
-        # Each Pokémon URL looks like "https://pokeapi.co/api/v2/pokemon/1/"
-        url = pokemon['url']
-        parts = url.strip("/").split("/")
-        id = parts[-1]  # The last part is the Pokémon's ID
-        
-        # Create an image URL using the Pokémon's ID
-        image_url = f"https://api-football-standings.azharimm.site/leagues/eng.1"
-        
-        pokemons.append({
-            'name': pokemon['name'].capitalize(),
+    league_list = data['data']  # The correct key is 'data', not 'results'
+
+    leagues = []
+
+    for league in league_list:
+        url = league['slug']  # 'slug' usually contains a unique ID or path
+        id = url
+        image_url = f"https://api-football-standings.azharimm.site/leagues/{id}"
+
+        leagues.append({
+            'name': league['name'],
             'id': id,
             'image': image_url
-        })
+        }) 
+
+        return render_template("index.html", leagues=leagues)
+if __name__ == '__main__':
+    app.run(debug=True)
+
     
-    # Send the Pokémon list to the index.html page
-    return render_template("index.html", pokemons=pokemons)
-    
-    
+
     
     
     
