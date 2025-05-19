@@ -6,9 +6,10 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     # Get the leagues from the API
-    response = requests.get("https://api-football-standings.azharimm.site/leagues")
+    response = requests.get("")
     data = response.json()
     league_list = data['data']  # The correct key is 'data', not 'results'
+    print(data)
 
     leagues = []
 
