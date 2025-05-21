@@ -5,21 +5,19 @@ app = Flask(__name__)
 
 response = requests.get("https://www.fruityvice.com/api/fruit/all")
 data = response.json()
-music_list = data['data']  # The correct key is 'data', not 'results'
-print(data)
 
-leagues = []
 
-for music in music_list:
-    url = music['slug']  # 'slug' usually contains a unique ID or path
-    id = url
+fruit_list = []
+
+for fruit in fruit_list:
+   
     
-    music.append({
-        'name': league['name'],
+    fruit_list.append({
+        'name': fruit['name'],
         'id': id,
         
     })
-
+    print(fruit_list)
 @app.route("/")
 def index():
     # Get the leagues from the API
@@ -30,17 +28,17 @@ def index():
 
     music = []
 
-    for music in music_list:
+    for fruit in fruit_list:
         url = fruit['slug']  # 'slug' usually contains a unique ID or path
         id = url
         
-        leagues.append({
-            'name': league['name'],
+        fruit.append({
+            'name': fruit['name'],
             'id': id,
             
         })
 
-    return render_template("index.html", leagues=leagues)
+    return render_template("index.html", fruit=fruit)
 
 
 
