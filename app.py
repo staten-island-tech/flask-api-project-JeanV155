@@ -27,20 +27,21 @@ def index():
 
 @app.route("/fruit/<int:id>")
 def fruit_detail(id):
-    # Get detailed info for a specific fruit using its id
-    response = requests.get(f"https://www.fruityvice.com/api/fruit/{id}")
     
-    if response.status_code != 200:
-        return "Fruit not found", 404
-
-    data = response.json()
+    try:
+        response = requests.get(f"https://www.fruityvice.com/api/fruit/all{id}")
+        response.raise_for_status()
+        data = response.json()
+    except requests.exceptions.RequestException:
+        abort(404)
+        
 
     # Extract details
     name = data.get('name')
     family = data.get('family')
     genus = data.get('genus')
     order = data.get('order')
-    nutritions = data.get('nutritions', {}) #look thgro8gh janet side quest for lamnda and map
+    nutritions = data.get('nutritions', {}) #look thgro8gh janet side quest for lamnda and map 
 
     return render_template("fruit_detail.html",  
 )
