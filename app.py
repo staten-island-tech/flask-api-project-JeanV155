@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, abort,
 import requests
 
 app = Flask(__name__)
@@ -34,14 +34,29 @@ def fruit_detail(id):
         data = response.json()
     except requests.exceptions.RequestException:
         abort(404)
-        
 
     # Extract details
-    name = data.get('name')
+    name = data.get('name').capitalize()
     family = data.get('family')
     genus = data.get('genus')
     order = data.get('order')
-    nutritions = data.get('nutritions', {}) #look thgro8gh janet side quest for lamnda and map 
+    nutrition = data.get('nutritions', {}) #look thgro8gh janet side quest for lamnda and map 
 
-    return render_template("fruit_detail.html",  
+    fruit_names = []
+    fruit_value = []
+
+    for key, values in data['nutrition'].items():
+        fruit_names.append(key)
+        fruit_value.append(values) 
+
+    nutrition = zip(fruit_names, fruit_value)
+
+    return render_template("fruit_detail.html", fruit = {
+        'name': name,
+        'genus' : family,
+        'genus' : genus,
+        'order' : order,
+        'nutrition' : nutrition
+
+    } 
 )
