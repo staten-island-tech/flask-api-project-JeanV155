@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fruit List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Fruit Encyclopedia</h1>
+        <ul class="fruit-list">
+            {% for fruit in fruits %}
+                <li>
+                    <a href="{{ url_for('fruit_detail', id=fruit.id) }}">{{ fruit.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
+

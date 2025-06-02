@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ fruit.name }} Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ fruit.name }}</h1>
+        <div class="fruit-details">
+            <p><strong>Family:</strong> {{ fruit.family }}</p>
+            <p><strong>Genus:</strong> {{ fruit.genus }}</p>
+            <p><strong>Order:</strong> {{ fruit.order }}</p>
+        </div>
+
+        <h2>Nutrition Information</h2>
+        <table class="nutrition-table">
+            <thead>
+                <tr>
+                    <th>Nutrient</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nutrient, value in fruit.nutrition %}
+                <tr>
+                    <td>{{ nutrient }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ url_for('index') }}" class="back-link">← Back to Fruit List</a>
+    </div>
+</body>
+</html>
