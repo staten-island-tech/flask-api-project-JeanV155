@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    search_query = request.args.get('search', '').strip().lower()
     response = requests.get("https://www.fruityvice.com/api/fruit/all")
     fruit_data = response.json()
 
@@ -14,10 +15,19 @@ def index():
 
     fruit_list = []
     for fruit in fruit_data:
-        fruit_list.append({
-            'name': fruit["name"],
-            'id': fruit["id"]
-        })
+        name = fruit["name"]
+        fruit_id = str(fruit["id"])
+
+        # Include fruit if search_query is empty, matches name, or matches ID
+        if not search_query or search_query in name.lower() or search_query == fruit_id:
+            fruit_list.append({
+                'name': name,
+                'id': fruit["id"]
+            })
+
+   
+    if search_query and not fruit_list:
+        abort(404)
 
     return render_template("index.html", fruits=fruit_list)
 
@@ -36,10 +46,9 @@ def fruit_detail(id):
     genus = data.get('genus', 'Unknown')
     order = data.get('order', 'Unknown')
 
-    # Your original nutrition extraction loop
+    # Extract nutrition info
     fruit_names = []
     fruit_value = []
-
     for key, values in data.get('nutritions', {}).items():
         fruit_names.append(key)
         fruit_value.append(values)
